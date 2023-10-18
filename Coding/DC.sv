@@ -7,6 +7,6 @@ module DC #(
 	output [STREAM_COUNT-1:0] Q
 );
 
-assign Q = !enable ? 0 : 1 << data;
+assign Q = !enable ? 1'b0 : 1'b1 << data;
 
 endmodule

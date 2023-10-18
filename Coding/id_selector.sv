@@ -11,23 +11,17 @@ module id_selector #(
 	output logic [ID_WIDTH-1:0] id_o
 );
 
-integer i;
-reg [QOS_WIDTH-1:0] max_qos;
-reg [ID_WIDTH-1:0] max_qos_id;
+integer i = 0;
+logic [QOS_WIDTH-1:0] max_qos = 0;
+logic [ID_WIDTH-1:0] max_qos_id = 0;
 
-initial begin
-	i = 0;
-	max_qos = 0;
-	max_qos_id = 0;
-end
-
-always @(posedge clk) begin
+always @(posedge rst) begin			//Сброс теперь асинхронный
 	if (rst) begin
 		i = 0;
 	end	
 end
 
-always @* begin
+always @(posedge clk) begin			//Данный блок должен быть комбинационным, чтобы избежать задержки в 1 такт
 	max_qos = 0;
 	max_qos_id = 0;
 
@@ -37,12 +31,16 @@ always @* begin
 			max_qos_id = i;
 		end
 		else if (qos_i[i] == 0 && valid_i[i] == 1) begin
+			max_qos = ~0;
 			max_qos_id = i;
-			break;
+		end
+		else begin
+			max_qos = 0;
+			max_qos_id = 0;
 		end
 	end
 	
-	id_o = max_qos_id;
+	if (i == STREAM_COUNT) id_o = max_qos_id;
 end
 
 endmodule

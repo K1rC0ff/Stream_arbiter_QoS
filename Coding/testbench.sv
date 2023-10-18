@@ -45,7 +45,7 @@ module testbench #(
   initial
   begin
 	  clk = 0;
-	  rst_n = 0;
+	  rst_n = 1;
 	  m_ready_i = 1'b1;
 	  s_valid_i = 2'b00;
 	  s_last_i = 2'b00;
@@ -54,7 +54,7 @@ module testbench #(
 	  s_data_i[0] = 8'h00;
 	  s_data_i[1] = 8'h00;
 	  
-	  #60
+	  #50
 	  
 	  s_valid_i = 2'b11;
 	  

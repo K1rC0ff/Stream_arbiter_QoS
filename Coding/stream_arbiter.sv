@@ -21,9 +21,9 @@ module stream_arbiter #(
   input logic m_ready_i
 );
 
-wire [STREAM_COUNT-1:0] dc_out;
+logic [STREAM_COUNT-1:0] dc_out;
 
-id_selector #(.QOS_WIDTH(T_QOS__WIDTH), .STREAM_COUNT(STREAM_COUNT)) selector (.clk(clk), .rst(rst_n), .qos_i(s_qos_i), .valid_i(s_valid_i), .id_o(m_id_o));
+id_selector #(.QOS_WIDTH(T_QOS__WIDTH), .STREAM_COUNT(STREAM_COUNT)) selector (.clk(clk), .rst(~rst_n), .qos_i(s_qos_i), .valid_i(s_valid_i), .id_o(m_id_o));
 
 MUX #(.DATA_WIDTH(T_QOS__WIDTH), .STREAM_COUNT(STREAM_COUNT)) qos_mux (.data(s_qos_i), .adress(m_id_o), .Q(m_qos_o));
 MUX #(.DATA_WIDTH(T_DATA_WIDTH), .STREAM_COUNT(STREAM_COUNT)) data_mux (.data(s_data_i), .adress(m_id_o), .Q(m_data_o));
@@ -31,8 +31,8 @@ MUX #(.DATA_WIDTH(T_DATA_WIDTH), .STREAM_COUNT(STREAM_COUNT)) data_mux (.data(s_
 DC #(.STREAM_COUNT(STREAM_COUNT)) ready_dc (.enable(m_ready_i), .data(m_id_o), .Q(dc_out));
 assign s_ready_o = s_valid_i & dc_out;
 
-assign m_last_o = s_last_i ? 1 : 0;
+assign m_last_o = s_last_i ? 1'b1 : 1'b0;		//Тернарный оператор выполняет роль элемента ИЛИ для всех битов регистра
 
-assign m_valid_o = s_valid_i ? 1 : 0;
+assign m_valid_o = s_valid_i ? 1'b1 : 1'b0;
 
 endmodule
