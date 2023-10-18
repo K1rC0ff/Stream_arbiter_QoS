@@ -9,4 +9,4 @@
 
 Отчет о тестовом синтезе для указанной ПЛИС представлен на рисунке:
 
-![Отчет о тестовом синтезе](./Analysis and Synthesis report.png)
+![Отчет о тестовом синтезе](https://github.com/K1rC0ff/Stream_arbiter_QoS/blob/main/Test%20synthesis/Analysis%20and%20Synthesis%20report.png)
